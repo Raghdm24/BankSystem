@@ -6,26 +6,64 @@
 #define BANKSYSTEMPROJECT_PERSON_H
 
 #include<iostream>
+#include "Validation.h"
 #include<string>
 using namespace std;
 
 class Person {
-    protected:
+protected:
     string name;
     int id;
     string password;
 
-    public:
+public:
     //default constructor
     Person() {
         this->id= 0;
     }
 
     //param const
-    Person(string name, int id, string password, double balance) {
-        this->name = name;
+    Person(string name, int id, string password) {
+        setName(name);
+        setId(id);
+        setPassword(password);
+    }
+
+    //setters
+    void setName(string name) {
+        if (Validation::validateName(name)) {
+            this->name = name;
+        }else {
+            cout<<"Name is invalid"<<endl;
+        }
+    }
+    void setId(int id) {
         this->id = id;
-        this->password = password;
+    }
+    void setPassword(string password) {
+        if (Validation::validatePassword(password)) {
+            this->password = password;
+        }else {
+            cout<<"Password is invalid"<<endl;
+        }
+    }
+
+    //getters
+    string getName() {
+        return this->name;
+    }
+    int getId() {
+        return this->id;
+    }
+    string getPassword() {
+        return this->password;
+    }
+
+    //methods
+    void display() {
+        cout<<"Name"<<name<<endl;
+        cout<<"Id"<<id<<endl;
+
     }
 
 

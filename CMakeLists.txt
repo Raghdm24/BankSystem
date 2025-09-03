@@ -6,4 +6,7 @@ set(CMAKE_CXX_STANDARD 20)
 add_executable(BankSystemProject main.cpp
         Person.h
         Client.h
+        Admin.h
+        Employee.h
+        Validation.h
 )

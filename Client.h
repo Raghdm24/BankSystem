@@ -5,59 +5,31 @@
 #ifndef BANKSYSTEMPROJECT_CLIENT_H
 #define BANKSYSTEMPROJECT_CLIENT_H
 
-#include<iostream>
-#include "Person.h"
-#include <cctype>
-using namespace std;
+
+#include "Person.h"   //this include has --> 1- iostream/namespace std/validate
 
 class Client : public Person {
-private:
     double balance;
 
 public:
-    Client() {
-        balance = 0;
+    Client() : Person() {
+        this->balance = 0;
     }
 
-    Client(string n, int i, string pass, double bal) {
-        name = n;
-        id = i;
-        pass = pass;
-        balance = bal;
+    Client(string name, int id, string password, double balance) : Person(name, id, password) {
+        setMinBalance(balance);
+
     }
 
     //setters
-    void setName(string newName) {
-        if (newName.length() < 5 || newName.length() > 20) {
-            cout<<"Error: "<<newName<<" must be betweem 5 and 20"<<endl;
-            return;
-        }
-
-        for (int i =0; i < newName.length(); i++) {
-            if (!isalpha(newName[i] && newName[i] != ' ')) {
-                cout<<"Error: Name must contain only alphabetic characters and spaces."<<endl;
-                return;
-            }
-        }
-        this->name= newName;
-        cout<<"Name set successfully "<<newName<<endl;
-    }
-
-    void setPassword(string newPass) {
-        if (newPass.length() < 8 || newPass.length() > 20) {
-            cout<<"Error: "<<newPass<<" must be betweem 5 and 20"<<endl;
-            return;
-        }
-        password= newPass;
-    }
+    //setters for setName & setPass will be inherited from Person
 
     void setMinBalance(double newBalance) {
-        if (newBalance < 1500) {
-            cout<<"Error: "<<newBalance<<" is less than 1500"<<endl;
-            return;
+        if (Validation::validateBalance(newBalance)) {
+            this->balance = newBalance;
+        }else {
+            cout<<"Invalid balance"<<endl;
         }
-        balance = newBalance;
-        cout<<"Balance set successfully "<<newBalance<<endl;
 
     }
 
@@ -81,7 +53,7 @@ public:
             cout<<"Error: "<<amount<<" can't be zero or less."<<endl;
             return;
         }
-        balance += amount;
+        this->balance += amount;
     }
     void withdraw(double amount) {
         if ( amount <= 0 ) {
@@ -92,15 +64,15 @@ public:
             cout<<"Invalid: Balance is greater than the amount you entered."<<endl;
         }
 
-        balance -= amount;
+        this->balance -= amount;
     }
     void transferTo(double amount, Client& receiver) {
         if ( amount <= 0 ) {
             cout<<"Error: "<<amount<<" can't be zero or less."<<endl;
             return;
         }
-        this->balance -= amount;
-        receiver.balance += amount;
+        withdraw(amount);       //withdraw from this account
+        receiver.deposit(amount);   //deposits to reciecer account
     }
 
     void checkBalance() {
@@ -108,15 +80,10 @@ public:
     }
 
     void display( ) {
-        cout<<"Client infomation:"<<endl;
-        cout<<"Name: "<<name<<endl;
-        cout<<"Id: "<<id<<endl;
-        cout<<"Password: "<<password<<endl;
+        Person :: display();
         cout<<"Balance: "<<balance<<endl;
         cout<<"-----------------------------"<<endl;
     }
-
-
 
 };
 
